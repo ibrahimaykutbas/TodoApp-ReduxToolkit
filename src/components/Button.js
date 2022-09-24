@@ -9,7 +9,7 @@ import {useDispatch} from 'react-redux';
 
 import {toggleModal} from '../redux/modal';
 
-const Button = () => {
+const Button = ({isDark}) => {
   const dispatch = useDispatch();
 
   return (
@@ -17,7 +17,7 @@ const Button = () => {
       style={styles.container}
       activeOpacity={0.6}
       onPress={() => dispatch(toggleModal({visible: true}))}>
-      <Text style={styles.text}>Add a new task</Text>
+      <Text style={[styles.text,isDark && {color:colors.WHITE}]}>Add a new task</Text>
     </TouchableOpacity>
   );
 };
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
   text: {
     color: colors.BLACK,
     fontSize: fonts.size(20),
-    fontWeight: '200',
+    fontWeight: '400',
   },
 });
