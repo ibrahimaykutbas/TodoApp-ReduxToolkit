@@ -13,7 +13,9 @@ import colors from '../theme/colors';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {toggleModal} from '../redux/modal';
-import {editTodo} from '../redux/todo';
+import {addTodo, editTodo} from '../redux/todo';
+
+import {nanoid} from '@reduxjs/toolkit';
 
 import Modal from 'react-native-modal';
 
@@ -28,13 +30,21 @@ const AddTodo = () => {
   };
 
   const saveTodo = () => {
-    dispatch(
-      editTodo({
-        id: data.id,
-        title: todo,
-        completed: data.completed,
-      }),
-    );
+    data
+      ? dispatch(
+          editTodo({
+            id: data.id,
+            title: todo,
+            completed: data.completed,
+          }),
+        )
+      : dispatch(
+          addTodo({
+            id: nanoid(),
+            title: todo,
+            completed: false,
+          }),
+        );
     closeModal();
   };
 
@@ -63,11 +73,12 @@ export default AddTodo;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '100%',
+    height: units.height / 5,
+    position: 'absolute',
+    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: units.height / 3,
-    marginHorizontal: units.width / 10,
     backgroundColor: 'white',
     borderRadius: units.height / 300,
 
