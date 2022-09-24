@@ -1,7 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-import {nanoid} from '@reduxjs/toolkit';
-
 import {MMKV} from 'react-native-mmkv';
 
 const storage = new MMKV();
