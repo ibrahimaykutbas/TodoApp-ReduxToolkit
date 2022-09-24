@@ -11,7 +11,7 @@ const modal = createSlice({
   reducers: {
     toggleModal: (state, action) => {
       state.modalVisible = action.payload.visible;
-      state.data = action.payload.data ? action.payload.data : false;
+      state.data = action.payload?.data || false;
     },
   },
 });
