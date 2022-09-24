@@ -1,33 +1,16 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+import {nanoid} from '@reduxjs/toolkit';
+
+import {MMKV} from 'react-native-mmkv';
+
+const storage = new MMKV();
+
+const todosMMKV = storage.getString('todos');
+const todoList = todosMMKV && JSON.parse(todosMMKV);
+
 const initialState = {
-  todos: [
-    {
-      id: 1,
-      title: 'wake up at 7am',
-      completed: false,
-    },
-    {
-      id: 2,
-      title: 'rush your teeth',
-      completed: false,
-    },
-    {
-      id: 3,
-      title: 'walk the dog',
-      completed: false,
-    },
-    {
-      id: 4,
-      title: 'pay the bills',
-      completed: true,
-    },
-    {
-      id: 5,
-      title: 'work on UI/UX',
-      completed: true,
-    },
-  ],
+  todos: todoList ? todoList : [],
 };
 
 const todos = createSlice({
@@ -36,13 +19,19 @@ const todos = createSlice({
   reducers: {
     addTodo: (state, action) => {
       state.todos = [action.payload, ...state.todos];
+      return storage.set('todos', JSON.stringify(state.todos));
     },
     deleteTodo: (state, action) => {
+      state.todos = state.todos.filter(todo => todo.id != action.payload);
+      return storage.set('todos', JSON.stringify(state.todos));
+    },
+    changeTodoStatus: (state, action) => {
       state.todos = state.todos.map(todo =>
         todo.id === action.payload
           ? {...todo, completed: !todo.completed}
           : todo,
       );
+      return storage.set('todos', JSON.stringify(state.todos));
     },
     editTodo: (state, action) => {
       state.todos = state.todos.map(todo => {
@@ -51,9 +40,10 @@ const todos = createSlice({
         }
         return todo;
       });
+      return storage.set('todos', JSON.stringify(state.todos));
     },
   },
 });
 
-export const {addTodo, deleteTodo, editTodo} = todos.actions;
+export const {addTodo, deleteTodo, changeTodoStatus, editTodo} = todos.actions;
 export default todos.reducer;
