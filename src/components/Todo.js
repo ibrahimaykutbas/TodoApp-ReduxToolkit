@@ -5,28 +5,30 @@ import colors from '../theme/colors';
 import fonts from '../theme/fonts';
 import units from '../theme/units';
 
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
-import {deleteTodo} from '../redux/todo';
-import {toggleModal} from '../redux/modal';
+import {changeTodoStatus} from '../redux/todo';
 
 const Todo = ({todo}) => {
   const dispatch = useDispatch();
 
+  const {isDark} = useSelector(state => state.theme);
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: isDark ? colors.BLACK : colors.WHITE},
+      ]}>
       <TouchableOpacity
         activeOpacity={0.6}
-        onPress={() => dispatch(deleteTodo(todo.id))}
-        onLongPress={() =>
-          dispatch(
-            toggleModal({
-              visible: true,
-              data: todo,
-            }),
-          )
-        }>
-        <Text style={todo.completed ? styles.completedText : styles.activeText}>
+        onPress={() => dispatch(changeTodoStatus(todo.id))}>
+        <Text
+          style={
+            todo.completed
+              ? styles.completedText
+              : [styles.activeText, isDark && {color: colors.WHITE}]
+          }>
           {todo.title}
         </Text>
       </TouchableOpacity>
@@ -38,20 +40,21 @@ export default Todo;
 
 const styles = StyleSheet.create({
   container: {
+    width: units.width,
     justifyContent: 'center',
     alignItems: 'center',
   },
   activeText: {
+    color: colors.BLACK,
+    fontWeight: 'bold',
+    fontSize: fonts.size(15),
+    marginVertical: units.height / 40,
+  },
+  completedText: {
     color: colors.GRAY,
     fontWeight: 'bold',
     fontSize: fonts.size(15),
     marginVertical: units.height / 40,
     textDecorationLine: 'line-through',
-  },
-  completedText: {
-    color: colors.BLACK,
-    fontWeight: 'bold',
-    fontSize: fonts.size(15),
-    marginVertical: units.height / 40,
   },
 });
