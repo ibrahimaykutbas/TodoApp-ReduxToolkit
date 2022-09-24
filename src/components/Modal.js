@@ -45,6 +45,7 @@ const AddTodo = () => {
             completed: false,
           }),
         );
+    setTodo('');
     closeModal();
   };
 
