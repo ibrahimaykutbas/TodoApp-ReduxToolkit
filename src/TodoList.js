@@ -73,6 +73,11 @@ const TodoList = () => {
         contentContainerStyle={{paddingBottom: units.width}}
         showsVerticalScrollIndicator={false}
       />
+      {!todos.length > 0 && (
+        <Text style={[styles.text, isDark && {color: colors.WHITE}]}>
+          Empty List
+        </Text>
+      )}
     </View>
   );
 };
@@ -96,5 +101,11 @@ const styles = StyleSheet.create({
   swipeText: {
     fontSize: fonts.size(14),
     fontWeight: '500',
+  },
+  text: {
+    color: colors.BLACK,
+    fontSize: fonts.size(20),
+    fontWeight: '400',
+    position: 'absolute',
   },
 });
