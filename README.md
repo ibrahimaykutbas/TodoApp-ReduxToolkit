@@ -1,6 +1,6 @@
 # To-do App
 
-## Teknoloji
+## Teknoloji 
 
 React Native
 
